@@ -109,6 +109,9 @@ JSON для получение истории показаний (для ГУИ 
 {
     "device_id": 1312413123123123123123,
     "command_name": "history",
+    "start_date": "date",
+    "end_date: "date",
+    "interval": "hours/days/minutes",
     "parameter": ["temperature"]
 }
 ```
