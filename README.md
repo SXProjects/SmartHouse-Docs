@@ -112,6 +112,7 @@ JSON для получение истории показаний (для ГУИ 
     "start_date": "date",
     "end_date": "date",
     "interval": "hours/days/minutes",
+    "approx": "min/max/first/last/avg",
     "parameter": ["temperature"]
 }
 ```
@@ -122,11 +123,11 @@ JSON для получение истории показаний (для ГУИ 
     "history": [
         {
             "time": "stroka vremeni",
-            "value_temprature": 24
+            "temprature": 24
         },
         {
             "time": "stroka vremeni",
-            "value_temprature": 24
+            "temprature": 24
         }
 
     ]
