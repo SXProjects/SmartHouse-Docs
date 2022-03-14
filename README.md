@@ -143,7 +143,7 @@ Security.
 ```json
 {
     "command_name": "add_device_type",
-    "name": thermometer
+    "name": "thermometer"
     "work_modes": [
         {
             "name":"send_on_time",
