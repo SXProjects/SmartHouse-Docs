@@ -93,18 +93,20 @@ Security.
 
 ## Сервер & Сеть вещей & Устройства
 
-JSON для передачи данных с датчика на сеть вещей. (Перед тем как попасть в сеть вещей, JSON попадает на сервер.)
+### JSON для передачи данных с датчика на сеть вещей. (Перед тем как попасть в сеть вещей, JSON попадает на сервер.)
 ```json
 {
     "device_id": 21312312312312312,
-    "time": "2022-03-09T13:54:02.752Z",
+    "time": "2022-03-09T13:54:02",
     "command_name": "transmit_data",
     "temparature": 24.5,
-    "fluid": 80
+    "fluid": 80,
+    "error": "Тут напишу возможные сообщения о ошибках"
 }
 ```
+Ответ точно такого формата, но с указанием параметров других устройств, а не только индикаторов
 
-JSON для получение истории показаний (для ГУИ по большей части.)
+### JSON для получение истории показаний (для ГУИ по большей части.)
 ```json
 {
     "device_id": 1312413123123123123123,
@@ -120,7 +122,9 @@ JSON для получение истории показаний (для ГУИ 
 Ответ, который, в лучшем случае, получает устройство.
 ```json
 {
-    "history": [
+    "device_id": 42,
+    "command_name": "history",
+    "data": [
         {
             "time": "stroka vremeni",
             "temprature": 24
@@ -130,6 +134,176 @@ JSON для получение истории показаний (для ГУИ 
             "temprature": 24
         }
 
+    ],
+    "error": "Тут напишу возможные сообщения о ошибках"
+}
+```
+
+### Добавить новый тип устсройства в сеть вещей
+```json
+{
+    "command_name": "add_device_type",
+    "name": thermometer
+    "work_modes": [
+        {
+            "name":"send_on_time",
+            "indicators":[{"name":"themperature", "type":"float"}],
+            "parameters":[{"name":"send_seconds", "type":"int"}]
+        },
+        {
+            "name":"send_on_command",
+            "indicators":[{"name":"themperature", "type":"float"}],
+            "parameters":[{"name":"send", "type":"bool"}],
+        }
     ]
+}
+```
+Ответ
+```json
+{
+    "command_name": "add_device_type",
+    "error": "Тут напишу возможные сообщения о ошибках"
+}
+```
+
+### Запросить информацию о типах устройства
+```json
+{
+    "command_name": "device_type_info",
+}
+```
+
+Ответ
+```json
+{
+    "command_name": "device_type_info",
+    "device_types": [
+        {
+            "device_type": "thermometer",
+            "work_modes": [
+                {
+                    "name":"send_on_time",
+                    "indicators":[{"name":"themperature", "type":"float"}],
+                    "parameters":[{"name":"send_seconds", "type":"int"}]
+                },
+                {
+                    "name":"send_on_command",
+                    "indicators":[{"name":"themperature", "type":"float"}],
+                    "parameters":[{"name":"send", "type":"bool"}],
+                }
+            ]
+        }
+    ],
+    "error": "Тут напишу возможные сообщения о ошибках"
+}
+```
+
+### Добавить устройство
+```json
+{
+    "command_name": "add_device",
+    "location": "home/kitchen/thermometer1",
+    "device_type": "thermometer",
+    "work_mode": "send_on_time"
+}
+```
+Ответ
+```json
+{
+    "command_name": "add_device",
+    "device_id": 42,
+    "error": "Тут напишу возможные сообщения о ошибках"
+}
+```
+
+### Запросить информцию о устройствах
+```json
+{
+    "command_name": "device_info",
+}
+```
+Ответ
+```json
+{
+    "command_name": "device_info",
+    "devices": [
+        {
+            "device_id": 42
+            "location": "home/kitchen/thermometer1",
+            "device_type": "thermometer",
+            "work_mode": "send_on_time",
+        }
+    ],
+    "error": "Тут напишу возможные сообщения о ошибках"
+}
+```
+
+### Найти устройство
+match - true - ищем устройства по точному совпадинию, найдёт при "home/*/thermometer1"
+metch - false - ищем по частичному совпадению, найдёт даже при "ome/*/therm"
+```json
+{
+    "command_name": "find_device",
+    "match": false,
+    "location": "home/*/thermometer"
+}
+```
+Ответ
+```json
+{
+    "command_name": "find_device",
+    "device_id": [42, 43],
+    "error": "Тут напишу возможные сообщения о ошибках"
+}
+```
+
+### Удалить устройство
+```json
+{
+    "command_name": "remove_device",
+    "device_id": 42
+}
+```
+Ответ
+```json
+{
+    "command_name": "remove_device",
+    "error": "Тут напишу возможные сообщения о ошибках"
+}
+```
+
+### Установить режим работы
+```json
+{
+    "command_name": "set_work_mode",
+    "device_id": 42,
+    "work_mode": "send_on_time"
+}
+```
+Ответ
+```json
+{
+    "command_name": "set_work_mode",
+    "error": "Тут напишу возможные сообщения о ошибках"
+}
+```
+
+### Связть устройства
+Отвязть устройства - тоже самое, но unlink вместо link
+
+```json
+{
+    "command_name": "link",
+    "transmitter": 42,
+    "indicator": "themperature"
+    "receiver": 43,
+    "parameter": "max_working_temperature"
+}
+```
+Ответ
+```json
+{
+    "command_name": "link",
+    "error": "Тут напишу возможные сообщения о ошибках"
 }
 ```
