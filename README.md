@@ -166,6 +166,22 @@ Security.
 }
 ```
 
+### Удалить тип устройства
+Тип удлится только если в системе нет устройств с этим типом
+```json
+{
+    "command_name": "remove_device_type",
+    "device_type": "thermometer",
+}
+```
+Ответ
+```json
+{
+    "command_name": "remove_device_type",
+    "error": "invalid device type/device type is used by thermometer"
+}
+```
+
 ### Запросить информацию о типах устройства
 ```json
 {
