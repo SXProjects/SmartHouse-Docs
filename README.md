@@ -179,7 +179,7 @@ Security.
     "command_name": "device_type_info",
     "device_types": [
         {
-            "device_type": "thermometer",
+            "name": "thermometer",
             "work_modes": [
                 {
                     "name":"send_on_time",
