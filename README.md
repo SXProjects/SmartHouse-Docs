@@ -281,6 +281,47 @@ Security.
 }
 ```
 
+### Полная информация о конфигурации устройства
+Запрос
+```json
+{
+    "command_name": "device_config_info",
+    "device_id": [1,2,3],
+}
+```
+
+Ответ
+```json
+{
+    "command_name": "device_config_info",
+    "devices": [
+        {
+            "device_id": 42,
+            "device_type": "thermometer",
+            "work_mode": "send_on_time",
+            "work_modes": [   
+                {
+                    "name": "send_on_time",
+                    "live_time": 100,
+                    "sleep_time": 100,
+                    "receive_interval": 100,
+                    "indicators":[{"name":"themperature", "type":"float"}],
+                    "parameters":[{"name":"send_seconds", "type":"int"}]
+                },
+                {
+                    "name":"send_on_command",
+                    "live_time": 100,
+                    "sleep_time": 100,
+                    "receive_interval": 100,
+                    "indicators":[{"name":"themperature", "type":"float"}],
+                    "parameters":[{"name":"send", "type":"bool"}],
+                }
+            ]
+        }
+    ]
+}
+```
+
 ### Найти устройство
 match - true - ищем устройства по точному совпадинию, найдёт при "home/*/thermometer1"
 match - false - ищем по частичному совпадению, найдёт даже при "ome/*/therm"
@@ -391,43 +432,22 @@ match - false - ищем по частичному совпадению, най�
 Если устройство не спит, то раз в receive_interval оно отправляет GET запрос, ожидая, что на него в ответ придут новые данные и команды.
 
 ### Получение информации устройством
+Когда физическое устройство впервые подключается к серверу, ему необходимо получить айдишники своих виртуальных устройств.
+
 Запрос
-/commands/get
 ```json
 {
-    "device_id": 42,
-    first_start: true
+    "unique_id": 228,
+    "start": true,
 }
 ```
 
-Ответ
+В случае, если указан параметр "start", то в ответ на эту команду нужно отправить на сеть вещей device_config_info:
+Запрос на сеть вещей
 ```json
 {
     "command_name": "device_config_info",
-    "devices": [
-        {
-            "device_id": 42,
-            "device_type": "thermometer",
-            "work_modes": [   
-                {
-                    "name": "send_on_time",
-                    "live_time": 100,
-                    "sleep_time": 100,
-                    "receive_interval": 100,
-                    "indicators":[{"name":"themperature", "type":"float"}],
-                    "parameters":[{"name":"send_seconds", "type":"int"}]
-                },
-                {
-                    "name":"send_on_command",
-                    "live_time": 100,
-                    "sleep_time": 100,
-                    "receive_interval": 100,
-                    "indicators":[{"name":"themperature", "type":"float"}],
-                    "parameters":[{"name":"send", "type":"bool"}],
-                }
-            ]
-        }
-    ]
+    "device_id": [1,2,3], % виртуальные устройства
 }
 ```
 
