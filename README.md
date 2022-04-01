@@ -297,8 +297,8 @@ Security.
     "devices": [
         {
             "device_id": 42,
-            "device_type": "thermometer",
-            "work_mode": "send_on_time",
+            "name": "thermometer",
+            "current_work_mode": "send_on_time",
             "work_modes": [   
                 {
                     "name": "send_on_time",
