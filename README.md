@@ -439,7 +439,7 @@ match - false - ищем по частичному совпадению, най�
 {
     "command_name": "wakeup",
     "unique_id": 228,
-    "start": true
+    "version": 3
 }
 ```
 
